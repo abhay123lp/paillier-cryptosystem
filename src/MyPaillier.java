@@ -14,7 +14,7 @@ public class MyPaillier {
 	 * @Pre n>=1
 	 * @return a^n modulus m
 	 */
-	public static BigInteger powerMod(BigInteger a,BigInteger n, BigInteger m){//n should be a BigInteger?
+	public static BigInteger powerMod(BigInteger a,BigInteger n, BigInteger m){
 		BigInteger result = a;
 		while (n.compareTo(BigInteger.ONE)>0){
 			result = result.multiply(a);
@@ -60,21 +60,52 @@ public class MyPaillier {
 			a = new BigInteger(1024, new Random());
 			a=a.mod(m);
 		}
+		System.out.println("a is: "+ a);
 		if (!gcd(a,m).equals(new BigInteger("1"))) return false;
 		else{
 			BigInteger b = powerMod(a, new BigInteger ("2"), m);
-			BigInteger c = powerMod(b,(m.add(BigInteger.ONE).divide(FOUR)), m);
+			BigInteger c = powerMod(b,(m.add(BigInteger.ONE)).divide(FOUR), m);
+			System.out.println("b is: "+ b);
+			System.out.println("c is: "+ c);
 			if (!b.equals(powerMod(c, new BigInteger("2"), m))) return false;
-			if (!c.equals(a.mod(m)) || !c.equals((a.negate()).mod(m))) return false;
+			System.out.println("test 1");
+			if (!c.equals(a.mod(m)) && !c.equals((a.negate()).mod(m))) return false;
+			System.out.println("test 2");
 		}
 		return true;
 	}
 
-	private static boolean powerOfInteger(BigInteger m) {
-
-		return true;
+	public static boolean powerOfInteger(BigInteger m) {
+		boolean ans = false;
+		long x = m.longValue();
+		long i = 2;
+		while (i<= Math.log10((double)x)/Math.log10(2.0)){
+			double r = computeRoot(x, i);
+			if (Math.round(r)==r){ // meaning r is an integer;
+				ans = true;
+				break;
+			}
+			else i++;
+		}
+		return ans;
 	}
-
+	public static double computeRoot(long x, long i) { //is double a problem here?
+		double tmp = x;
+		double high = x;
+		double low = 0;
+		while (Math.abs(Math.pow(tmp, i)-x)>0.0001){//we need epsilon machine here 
+			//simple binary search:
+			tmp= (high+low)/2.0;
+			if (Math.pow(tmp, i)>x)
+				high = tmp;
+			else if (Math.pow(tmp,i)<x) 
+				low = tmp;
+		}
+		//this is to fix the error caused by using a fraction, if necessary: 
+		if (Math.abs(Math.round(tmp)-tmp)<0.00001) tmp = Math.round(tmp);
+		return tmp;
+	}
+	
 	/**
 	 * GCD for BigInteger
 	 * @param n1 a bigNubmer
@@ -97,15 +128,6 @@ public class MyPaillier {
 	 * @param n2 a bigNubmer
 	 * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
 	 */
-
-	//ika: why do we need this? 
-	public static int gcd(int n1, int n2){
-		if(n2==0) return n1;
-		int reminder=n1%n2;
-		n1=n2;
-		n2=reminder;
-		return gcd(n1,n2);
-	}
 
 	//Generating Key
 
