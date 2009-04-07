@@ -1,11 +1,13 @@
 import java.math.BigInteger;
 import java.util.Random;
+
+import sun.security.util.BigInt;
 /**
  * @author Ika Bar-Menachem, Nir Hemed
  */
 
 public class MyPaillier {
-
+    public final static int NUM_OF_BITS = 32;  
 	/**
 	 * power a number a modulus m
 	 * @param a the number to be powered
@@ -14,14 +16,13 @@ public class MyPaillier {
 	 * @Pre n>=1
 	 * @return a^n modulus m
 	 */
-	public static BigInteger powerMod(BigInteger a,BigInteger n, BigInteger m){
-		BigInteger result = a;
-		while (n.compareTo(BigInteger.ONE)>0){
-			result = result.multiply(a);
-			if (result.compareTo(m)>0) result=result.mod(m);
-			n = n.subtract(BigInteger.ONE);
+	public static BigInteger powerMod(BigInteger ans,BigInteger a, BigInteger n, BigInteger m){
+		if (ans.compareTo(m)>0) ans = ans.mod(m);
+		if (n.equals(BigInteger.ONE)) return ans;
+		if ((n.mod(new BigInteger("2"))).equals(BigInteger.ZERO)){//n is even
+			return ((powerMod(ans, a, n.divide(new BigInteger ("2")), m)).multiply(powerMod(ans,a, n.divide(new BigInteger ("2")), m))).mod(m);
 		}
-		return result;
+		else return a.multiply(powerMod(ans, a, n.subtract(BigInteger.ONE), m));
 	}
 
 	/**
@@ -34,7 +35,7 @@ public class MyPaillier {
 		BigInteger result = new BigInteger("0");
 		while (!probablyPrime){
 			//m is supposed to be a random integer with 1024 bits:
-			BigInteger m = new BigInteger(1024, new Random());
+			BigInteger m = new BigInteger(NUM_OF_BITS, new Random());
 			if (isPrime(m)) {
 				probablyPrime = true;
 				result = m;
@@ -53,7 +54,7 @@ public class MyPaillier {
 		if (powerOfInteger(m)) return false;
 		// the number is not a power of integer
 		System.out.println("the number is not a power of integer");
-		BigInteger a = new BigInteger(1024, new Random());
+		BigInteger a = new BigInteger(NUM_OF_BITS, new Random());
 		//we need a to be from Zm and not ZERO:
 		a=a.mod(m);
 		while (a.equals(BigInteger.ZERO)){
@@ -73,6 +74,20 @@ public class MyPaillier {
 			System.out.println("test 2");
 		}
 		return true;
+	}
+
+
+
+	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
+		BigInteger[] arr = new BigInteger[n.toString().length()];
+		BigInteger result = a;
+		String binaryRep = n.toString(2);
+		arr[0]=a;
+		for (int i=1; i< arr.length; i++){
+			arr[i] = arr[i-1].pow(2).mod(m);
+			if (binaryRep.charAt(i)=='1') result = result.multiply(arr[i]).mod(m);
+		}
+		return result;
 	}
 
 	public static boolean powerOfInteger(BigInteger m) {
@@ -105,7 +120,7 @@ public class MyPaillier {
 		if (Math.abs(Math.round(tmp)-tmp)<0.00001) tmp = Math.round(tmp);
 		return tmp;
 	}
-	
+
 	/**
 	 * GCD for BigInteger
 	 * @param n1 a bigNubmer
@@ -123,11 +138,23 @@ public class MyPaillier {
 	}//end of gcd
 
 	/**
-	 * GCD for int
-	 * @param n1 a bigNubmer
-	 * @param n2 a bigNubmer
-	 * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
+	 * Log for big Integer
+	 * @param a the BigInteger
+	 * @param base the base
+	 * @return Log[base,a]
 	 */
+	public static double log(BigInteger a, double base) {
+		int b = a.bitLength() - 1;
+		double c = 0;
+		double d = 1;
+		for (int i = b; i >= 0; --i) {
+			if (a.testBit(i))
+				c += d;
+			d *= 0.5;
+		}
+		return (Math.log(c) + Math.log(2) * b) / Math.log(base);
+	}
+
 
 	//Generating Key
 

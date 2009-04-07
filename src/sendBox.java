@@ -7,9 +7,17 @@ public class sendBox {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		BigInteger bInt=MyPaillier.gcd(new BigInteger("1071"), new BigInteger("1029"));
-		System.out.println(bInt);
+		System.out.println((new BigInteger("3")).toString(2).length());
+		System.out.println(MyPaillier.log(new BigInteger("8"), 2));
+		System.out.println(MyPaillier.powerMod(new BigInteger("3"), new BigInteger("2"),new BigInteger("7")));
+		
+		
+
+//		BigInteger a = MyPaillier.generatePrime();
+//		System.out.println(a);
+//		System.out.println(a.isProbablePrime(10));
+		
+		
 	}
 
 }
