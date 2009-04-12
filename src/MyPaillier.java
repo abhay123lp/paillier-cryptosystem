@@ -204,10 +204,51 @@ public class MyPaillier {
 		
 		return (input.subtract(BigInteger.ONE).divide(n));
 	}
-
-	private BigInteger randomZStarNsqr(BigInteger n) {
-		// TODO Auto-generated method stub
-		return null;
+	
+	/**
+	 * @param n>0
+	 * @return a random number g where g is from Z*_n^2
+	 */
+	public static  BigInteger randomZStarNsqr(BigInteger n) {//TODO: test function
+		String ans="";
+		BigInteger randomNumberG;
+		BigInteger n2=n.pow(2);
+		
+		
+		//generating random number from [0,n2)
+		
+		String inputStrint=n2.toString();
+		boolean lexicorfeclyBigger=false;//equals true iff n is lexicoraficly bigger then ans
+		
+		
+		final BigInteger TEN=new BigInteger("10");
+		int num;
+		while (n2.compareTo(BigInteger.ZERO)==1){
+			num=(int)(Math.random()*10);
+			if(!lexicorfeclyBigger){
+				num=(int)(Math.random()*(int)n2.toString().charAt(0));//TODO: FIX THIS LINE
+				lexicorfeclyBigger=true;
+			}
+			ans+=num;
+			n2=n2.divide(TEN);
+			
+		}
+		randomNumberG=new BigInteger(ans);
+		n2=n.pow(2);
+		//checking if the nubmer is valid
+		
+		//TODO: remvoe following lines.
+		System.out.print("randomNumberG.compareTo(n2)<=0: ");
+		System.out.println(randomNumberG.compareTo(n2)<=0);
+		System.out.print("gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0");
+		System.out.println(gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0);
+		
+		if(randomNumberG.compareTo(n2)<=0&&gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0){
+			return randomNumberG;
+		}
+		System.out.println("again");
+		return randomZStarNsqr(n);//repeting the process if the nubmer we gentrated is
+								  //bigger then n^2 or if the gcd of n^2 and the random number is not equal to one.
 	}
 
 	//Decoding
