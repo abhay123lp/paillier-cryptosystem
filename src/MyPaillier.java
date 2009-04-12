@@ -1,7 +1,6 @@
 import java.math.BigInteger;
 import java.util.Random;
 
-import sun.security.util.BigInt;
 /**
  * @author Ika Bar-Menachem, Nir Hemed
  */
@@ -46,8 +45,8 @@ public class MyPaillier {
 
 	//TODO: turn back into private!
 	public static boolean isPrime(BigInteger m) {
-		BigInteger FOUR = new BigInteger("4");
-		BigInteger THREE = new BigInteger("3");
+		final BigInteger FOUR = new BigInteger("4");
+		final BigInteger THREE = new BigInteger("3");
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
 		// the number is of the desired form
 		System.out.println("the number is of the desired form");
@@ -77,7 +76,7 @@ public class MyPaillier {
 	}
 
 
-
+	//TODO: nir, please add descripton here, thanks :)
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
 		BigInteger[] arr = new BigInteger[n.toString().length()];
 		BigInteger result = a;
@@ -154,12 +153,62 @@ public class MyPaillier {
 		}
 		return (Math.log(c) + Math.log(2) * b) / Math.log(base);
 	}
+	
+	/**
+	 * 
+	 * @param number, the nubmer we want to calculate the inverse to
+	 * @param n the Ring of g*_n
+	 * @return ans, where ans*n== 0 mod g*_n
+	 */
+	public static BigInteger calculateInverse(BigInteger number,BigInteger n){
+		//TODO: complete function
+		return null;
+	}
 
 
 	//Generating Key
+	//TODO: Complete
+	public Key[] generateKey(){
+		BigInteger p=generatePrime();
+		BigInteger q=generatePrime();
+		while(!q.equals(p)){//preventing from p==q
+			q=generatePrime();
+		}
+		BigInteger n=p.multiply(q);//n=p*q
+		//lambda=lcm(p-1,q-1)
+		BigInteger lambda=(p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
+		lambda=lambda.divide(gcd(p.subtract(BigInteger.ONE),q.subtract(BigInteger.ONE)));
 
-
+		//generate g, where g is a random number from Z*_n^2
+		BigInteger g=randomZStarNsqr(n);
+		//calculate mu
+		BigInteger lInput=powerMod(g, lambda, n.pow(2));
+		
+		BigInteger mu=calculateInverse(lFucntion(lInput,n), n);//TODO: recheck this line
+		
+		
+		Key[] ans=new Key[2];
+		ans[0]=(Key) new PrivateKey(lambda,mu);
+		ans[1]=(Key) new PublicKey(n,g);
+		return ans;
+		
+	}
 	//Encoding
+	
+	/**
+	 * @param input
+	 * @param n
+	 * @return (input-1)/n
+	 */
+	private static BigInteger lFucntion(BigInteger input, BigInteger n) {
+		
+		return (input.subtract(BigInteger.ONE).divide(n));
+	}
+
+	private BigInteger randomZStarNsqr(BigInteger n) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	//Decoding
 }
