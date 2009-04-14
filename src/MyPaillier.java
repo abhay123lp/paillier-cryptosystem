@@ -6,7 +6,8 @@ import java.util.Random;
  */
 
 public class MyPaillier {
-    public final static int NUM_OF_BITS = 32;  
+    public final static int NUM_OF_BITS = 32; 
+    public static Random random = new Random();
 	/**
 	 * power a number a modulus m
 	 * @param a the number to be powered
@@ -76,7 +77,7 @@ public class MyPaillier {
 	}
 
 
-	//TODO: nir, please add descripton here, thanks :)
+	//TODO: Nir, please add description here, thanks :)
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
 		BigInteger[] arr = new BigInteger[n.toString().length()];
 		BigInteger result = a;
@@ -155,14 +156,37 @@ public class MyPaillier {
 	}
 	
 	/**
-	 * 
-	 * @param number, the nubmer we want to calculate the inverse to
+	 * Using the extended Euclidean algorithm
+	 * @param number, the number we want to calculate the inverse to
 	 * @param n the Ring of g*_n
 	 * @return ans, where ans*n== 0 mod g*_n
 	 */
-	public static BigInteger calculateInverse(BigInteger number,BigInteger n){
-		//TODO: complete function
-		return null;
+	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
+		BigInteger ans=moduluN;
+		BigInteger x=BigInteger.ZERO;
+		BigInteger y=BigInteger.ONE;
+		BigInteger lastX=BigInteger.ONE;
+		BigInteger lastY=BigInteger.ZERO;
+		BigInteger quotient;
+		BigInteger temp;
+		while(moduluN.equals(BigInteger.ZERO)==false){
+			quotient=number.divide(moduluN);
+			
+			temp=moduluN;
+			moduluN=number.mod(moduluN);
+			number=temp;
+			
+			temp=x;
+			x=lastX.subtract(quotient.multiply(x));
+			lastX=temp;
+			
+			temp=y;
+			y=lastY.subtract(quotient.multiply(y));
+			lastY=temp;
+			
+		}
+		return lastX.mod(ans);
+		
 	}
 
 
@@ -180,7 +204,7 @@ public class MyPaillier {
 		lambda=lambda.divide(gcd(p.subtract(BigInteger.ONE),q.subtract(BigInteger.ONE)));
 
 		//generate g, where g is a random number from Z*_n^2
-		BigInteger g=randomZStarNsqr(n);
+		BigInteger g=randomZStar(n.pow(2));
 		//calculate mu
 		BigInteger lInput=powerMod(g, lambda, n.pow(2));
 		
@@ -207,49 +231,43 @@ public class MyPaillier {
 	
 	/**
 	 * @param n>0
-	 * @return a random number g where g is from Z*_n^2
+	 * @return a random number g where g is from Z*_n
 	 */
-	public static  BigInteger randomZStarNsqr(BigInteger n) {//TODO: test function
-		String ans="";
-		BigInteger randomNumberG;
-		BigInteger n2=n.pow(2);
-		
-		
+	public static  BigInteger randomZStar(final BigInteger n) {
+		StringBuilder sb = new StringBuilder();
+		String nString=n.toString();
+		BigInteger ans;
+		int temp, i=0;
 		//generating random number from [0,n2)
-		
-		String inputStrint=n2.toString();
-		boolean lexicorfeclyBigger=false;//equals true iff n is lexicoraficly bigger then ans
-		
-		
-		final BigInteger TEN=new BigInteger("10");
-		int num;
-		while (n2.compareTo(BigInteger.ZERO)==1){
-			num=(int)(Math.random()*10);
-			if(!lexicorfeclyBigger){
-				num=(int)(Math.random()*(int)n2.toString().charAt(0));//TODO: FIX THIS LINE
-				lexicorfeclyBigger=true;
+		while(i<nString.length()){
+			temp = random.nextInt(nString.charAt(i)-47);
+			sb.append(temp);
+			if(temp<((int)nString.charAt(i))-48){//if temp is lexicographically smaller then n^2
+				sb.append(generateRandomNubmer(nString.length()-i -1));
+				break;
 			}
-			ans+=num;
-			n2=n2.divide(TEN);
-			
-		}
-		randomNumberG=new BigInteger(ans);
-		n2=n.pow(2);
-		//checking if the nubmer is valid
+			i++;
+		}//end of while
 		
-		//TODO: remvoe following lines.
-		System.out.print("randomNumberG.compareTo(n2)<=0: ");
-		System.out.println(randomNumberG.compareTo(n2)<=0);
-		System.out.print("gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0");
-		System.out.println(gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0);
 		
-		if(randomNumberG.compareTo(n2)<=0&&gcd(randomNumberG,n2).compareTo(BigInteger.ONE)==0){
-			return randomNumberG;
+		ans=new BigInteger(sb.toString());
+		
+		//Repeating the process until gcd(ans,n^2) equals one
+		return gcd(ans,n).equals(BigInteger.ONE)? ans : randomZStar(n);
+	}//end of randomZStarsqr
+	
+	/**
+	 * @param amountOfDigits, the size of the number to generate
+	 * @return a random number of "amountOfDigits" digits
+	 */
+	private static String generateRandomNubmer(int amountOfDigits){
+		StringBuilder sb=new StringBuilder();
+		while(amountOfDigits>0){
+			sb.append(random.nextInt(10));
+			amountOfDigits--;
 		}
-		System.out.println("again");
-		return randomZStarNsqr(n);//repeting the process if the nubmer we gentrated is
-								  //bigger then n^2 or if the gcd of n^2 and the random number is not equal to one.
-	}
+		return sb.toString();
+	}//end of generateRandomNubmer
 
 	//Decoding
 }
