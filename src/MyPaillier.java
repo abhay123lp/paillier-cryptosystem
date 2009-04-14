@@ -17,12 +17,14 @@ public class MyPaillier {
 	 * @return a^n modulus m
 	 */
 	public static BigInteger powerMod(BigInteger ans,BigInteger a, BigInteger n, BigInteger m){
-		if (ans.compareTo(m)>0) ans = ans.mod(m);
+		return a.modPow(n, m);
+		/*if (ans.compareTo(m)>0) ans = ans.mod(m);
 		if (n.equals(BigInteger.ONE)) return ans;
 		if ((n.mod(new BigInteger("2"))).equals(BigInteger.ZERO)){//n is even
 			return ((powerMod(ans, a, n.divide(new BigInteger ("2")), m)).multiply(powerMod(ans,a, n.divide(new BigInteger ("2")), m))).mod(m);
 		}
 		else return a.multiply(powerMod(ans, a, n.subtract(BigInteger.ONE), m));
+		*/
 	}
 
 	/**
@@ -76,9 +78,17 @@ public class MyPaillier {
 		return true;
 	}
 
-
-	//TODO: Nir, please add description here, thanks :)
+	/**
+	 * power a number a modulus m
+	 * @param a the number to be powered
+	 * @param n the power
+	 * @param m modulus
+	 * @Pre n>=1
+	 * @return a^n modulus m
+	 */
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
+		return a.modPow(n, m);
+		/*
 		BigInteger[] arr = new BigInteger[n.toString().length()];
 		BigInteger result = a;
 		String binaryRep = n.toString(2);
@@ -87,10 +97,15 @@ public class MyPaillier {
 			arr[i] = arr[i-1].pow(2).mod(m);
 			if (binaryRep.charAt(i)=='1') result = result.multiply(arr[i]).mod(m);
 		}
-		return result;
+		return result;*/
 	}
 	
-	//TODO: Nir, please add description here, thanks :)
+	/**
+	 * checks if a number m is a power of an integer, 
+	 * (meaning it is definitely not prime.
+	 * @param m is the number to be checked 
+	 * @return true iff m is a power of an integer.
+	 */
 	public static boolean powerOfInteger(BigInteger m) {
 		boolean ans = false;
 		long x = m.longValue();
@@ -105,6 +120,10 @@ public class MyPaillier {
 		}
 		return ans;
 	}
+	
+	/**
+	 * returns the i'th root of a number 
+	 */
 	public static double computeRoot(long x, long i) { //is double a problem here?
 		double tmp = x;
 		double high = x;
