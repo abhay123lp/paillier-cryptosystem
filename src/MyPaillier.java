@@ -89,7 +89,8 @@ public class MyPaillier {
 		}
 		return result;
 	}
-
+	
+	//TODO: Nir, please add description here, thanks :)
 	public static boolean powerOfInteger(BigInteger m) {
 		boolean ans = false;
 		long x = m.longValue();
@@ -212,19 +213,19 @@ public class MyPaillier {
 		
 		
 		Key[] ans=new Key[2];
-		ans[0]=(Key) new PrivateKey(lambda,mu);
+		ans[0]=(Key) new PrivateKey(lambda,mu,n);
 		ans[1]=(Key) new PublicKey(n,g);
 		return ans;
 		
 	}
-	//Encoding
+	
 	
 	/**
 	 * @param input
 	 * @param n
 	 * @return (input-1)/n
 	 */
-	private static BigInteger lFucntion(BigInteger input, BigInteger n) {
+	public static BigInteger lFucntion(BigInteger input, BigInteger n) {
 		
 		return (input.subtract(BigInteger.ONE).divide(n));
 	}
@@ -268,6 +269,8 @@ public class MyPaillier {
 		}
 		return sb.toString();
 	}//end of generateRandomNubmer
-
+	
+	//Encoding
+	
 	//Decoding
 }

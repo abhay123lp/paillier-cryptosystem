@@ -19,5 +19,11 @@ public class PublicKey extends Key {
 		return g;
 	}
 	
+	public BigInteger encode(BigInteger message){//TODO: Fix this.
+//		BigInteger r=MyPaillier.randomZStar(n);
+//		BigInteger c=g.pow(message);
+		return null;//TODO: change this line
+	}
+	
 	
 }//end of PublicKey
