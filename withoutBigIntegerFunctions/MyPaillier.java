@@ -177,9 +177,10 @@ public class MyPaillier {
 	
 	/**
 	 * Using the extended Euclidean algorithm
+	 * This Function Was Checked with Big Numbers
 	 * @param number, the number we want to calculate the inverse to
 	 * @param n the Ring of g*_n
-	 * @return ans, where ans*n== 0 mod g*_n
+	 * @return answer, where answer*n== 0 mod g*_n
 	 */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;

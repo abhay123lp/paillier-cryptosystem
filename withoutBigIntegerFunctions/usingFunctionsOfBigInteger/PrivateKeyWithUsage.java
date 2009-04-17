@@ -1,12 +1,15 @@
+package usingFunctionsOfBigInteger;
+
+
 import java.math.BigInteger;
 
 
-public class PrivateKey extends Key{
+public class PrivateKeyWithUsage {
 	private BigInteger lambda;
 	private BigInteger mu;
 	private BigInteger n;
 	
-	public PrivateKey(BigInteger lambda, BigInteger mu, BigInteger n){
+	public PrivateKeyWithUsage(BigInteger lambda, BigInteger mu, BigInteger n){
 		this.lambda=new BigInteger(lambda.toString());
 		this.mu=new BigInteger(mu.toString());
 		this.n=new BigInteger(n.toString());
@@ -21,8 +24,10 @@ public class PrivateKey extends Key{
 	}
 	
 	public BigInteger decode(BigInteger cipher){//TODO: 
-		BigInteger m=(MyPaillier.lFucntion(MyPaillier.powerMod(cipher, lambda, n.pow(2)), n).multiply(mu)).mod(n);
-		return m;
+//		BigInteger m=(MyPallierWithUsage.lFucntion(MyPallierWithUsage.powerMod(cipher, lambda, n.pow(2)), n).multiply(mu)).mod(n);
+//		return m;
+		return null;
+		
 	}
 	
 }
