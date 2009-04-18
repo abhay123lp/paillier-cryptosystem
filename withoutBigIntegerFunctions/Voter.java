@@ -2,7 +2,7 @@ import java.math.BigInteger;
 import java.util.Random;
 
 public class Voter {
-	private static int counter = 0;
+	private static int counter = 1;
 	private int vote;
 	private int voterID;
 	PublicKey publicKey;

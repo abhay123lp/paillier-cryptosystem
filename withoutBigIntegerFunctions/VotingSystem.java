@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.Scanner;
-import java.util.Timer;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -27,13 +26,14 @@ public class VotingSystem {
 		//end of logger
 		
 		//Choosing the amount of bits
-		System.out.println("Enter the amount of bits the system should have ");
+		System.out.println("Enter the number of bits of represantation for keys in the system: ");
 		numberOfBits = reader.nextInt();
 		
-		logger.info("Stating Voting System");
-		startTime = System.currentTimeMillis();
 		System.out.println("Please insert the amount of voters you want: ");
+		
 		int amountOfVoters = reader.nextInt();
+		logger.info("*******Stating Voting System**********");
+		startTime = System.currentTimeMillis();
 		logger.info("The amount of voters is: "+amountOfVoters);
 		
     	//creating keys.
@@ -59,9 +59,10 @@ public class VotingSystem {
     	endTime = System.currentTimeMillis();
     	logger.info("The amount of pepole that think that the egg came before the chicken is: "+result);
     	logger.info("The amount of pepole that think that the chicken came before the egg is: "+(amountOfVoters-result));
-    	logger.info("The vote started at: "+startTime);
-    	logger.info("The vote ended at: "+endTime);
-    	logger.info("Total time for vote: "+(endTime-startTime));
+    	//it's nicer this way:
+    	//logger.info("The vote started at: "+startTime);
+    	//logger.info("The vote ended at: "+endTime);
+    	logger.info("Total time for vote: "+((endTime-startTime)/1000.0) + " Seconds.");
 		
 	}//end of main
 }//end of Voting System
