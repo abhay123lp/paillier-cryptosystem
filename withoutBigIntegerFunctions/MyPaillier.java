@@ -317,6 +317,7 @@ public class MyPaillier {
 				break;
 			}
 			i++;
+			
 		}//end of while
 		
 		
