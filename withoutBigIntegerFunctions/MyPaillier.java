@@ -6,7 +6,7 @@ import java.util.Random;
  */
 
 public class MyPaillier {
-	public final static int NUM_OF_BITS = 1024; 
+	public final static int NUM_OF_BITS = VotingSystem.numberOfBits; 
 	public static Random random = new Random();
 
 
@@ -282,8 +282,8 @@ public class MyPaillier {
 		
 		
 		Key[] ans=new Key[2];
-		ans[0]=(Key) new PrivateKey(lambda,mu,n);
-		ans[1]=(Key) new PublicKey(n,g);
+		ans[0]= new PrivateKey(lambda,mu,n);
+		ans[1]= new PublicKey(n,g);
 		return ans;
 		
 	}
