@@ -37,7 +37,7 @@ public class VotingSystem {
 		logger.info("The amount of voters is: "+amountOfVoters);
 		
     	//creating keys.
-    	logger.info("Generating public and private keys");
+    	logger.info("Generating public and private keys. please wait...");
     	Key [] keys= MyPaillier.generateKey();
     	PrivateKey privateKey = (PrivateKey) keys[0];
     	PublicKey publicKey = (PublicKey) keys[1];
