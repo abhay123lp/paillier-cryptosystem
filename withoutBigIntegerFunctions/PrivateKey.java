@@ -12,15 +12,12 @@ public class PrivateKey extends Key{
 		this.n=new BigInteger(n.toString());
 	}
 	
-	public BigInteger getLambda() {
-		return lambda;
-	}
-	
-	public BigInteger getMu() {
-		return mu;
-	}
-	
-	public BigInteger decode(BigInteger cipher){//TODO: 
+	/**
+	 * @param cipher
+	 * @return m = L(c^lambda mod n^2)*mu mod n<br>
+	 * where L(u) = (u-1)/n
+	 */
+	public BigInteger decode(BigInteger cipher){
 		BigInteger m = (MyPaillier.lFucntion(MyPaillier.powerMod(cipher, lambda, n.pow(2)), n).multiply(mu)).mod(n);
 		return m;
 	}
