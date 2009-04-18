@@ -6,37 +6,21 @@ import java.util.Random;
  */
 
 public class MyPaillier {
-    public final static int NUM_OF_BITS = 32; 
-    public static Random random = new Random();
-	/**
-	 * power a number a modulus m
-	 * @param a the number to be powered
-	 * @param n the power
-	 * @param m modulus
-	 * @Pre n>=1
-	 * @return a^n modulus m
-	 */
-	public static BigInteger powerMod(BigInteger ans,BigInteger a, BigInteger n, BigInteger m){
-		return a.modPow(n, m);
-		/*if (ans.compareTo(m)>0) ans = ans.mod(m);
-		if (n.equals(BigInteger.ONE)) return ans;
-		if ((n.mod(new BigInteger("2"))).equals(BigInteger.ZERO)){//n is even
-			return ((powerMod(ans, a, n.divide(new BigInteger ("2")), m)).multiply(powerMod(ans,a, n.divide(new BigInteger ("2")), m))).mod(m);
-		}
-		else return a.multiply(powerMod(ans, a, n.subtract(BigInteger.ONE), m));
-		*/
-	}
+	public final static int NUM_OF_BITS = 1024; 
+	public static Random random = new Random();
+
+
 
 	/**
 	 * generation of big prime.
 	 * 
-	 * @return a random prime p, p=4k+3, p is being represented with 1024 bits. 
+	 * @return a random prime p, p=4k+3, p is being represented with NUM_OF_BITS bits. 
 	 */
 	public static BigInteger generatePrime(){
 		boolean probablyPrime = false;
-		BigInteger result = new BigInteger("0");
+		BigInteger result = BigInteger.ZERO;
 		while (!probablyPrime){
-			//m is supposed to be a random integer with 1024 bits:
+			//m is supposed to be a random integer with NUM_OF_BITS bits:
 			BigInteger m = new BigInteger(NUM_OF_BITS, new Random());
 			if (isPrime(m)) {
 				probablyPrime = true;
@@ -46,34 +30,37 @@ public class MyPaillier {
 		return result;
 	}//end of generatePrime
 
+	/**
+	 * prime check
+	 * 
+	 * @param m - the number to be checked.
+	 * @return :
+	 * 			if m is prime then @return = true;
+	 * 			if m is not prime, @return = false with probability larger then 0.5 
+	 */
 	//TODO: turn back into private!
 	public static boolean isPrime(BigInteger m) {
 		final BigInteger FOUR = new BigInteger("4");
 		final BigInteger THREE = new BigInteger("3");
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
 		// the number is of the desired form
-		System.out.println("the number is of the desired form");
 		if (powerOfInteger(m)) return false;
 		// the number is not a power of integer
-		System.out.println("the number is not a power of integer");
 		BigInteger a = new BigInteger(NUM_OF_BITS, new Random());
 		//we need a to be from Zm and not ZERO:
 		a=a.mod(m);
 		while (a.equals(BigInteger.ZERO)){
-			a = new BigInteger(1024, new Random());
+			a = new BigInteger(NUM_OF_BITS, new Random());
 			a=a.mod(m);
 		}
-		System.out.println("a is: "+ a);
 		if (!gcd(a,m).equals(new BigInteger("1"))) return false;
 		else{
 			BigInteger b = powerMod(a, new BigInteger ("2"), m);
 			BigInteger c = powerMod(b,(m.add(BigInteger.ONE)).divide(FOUR), m);
-			System.out.println("b is: "+ b);
-			System.out.println("c is: "+ c);
+		
 			if (!b.equals(powerMod(c, new BigInteger("2"), m))) return false;
-			System.out.println("test 1");
+
 			if (!c.equals(a.mod(m)) && !c.equals((a.negate()).mod(m))) return false;
-			System.out.println("test 2");
 		}
 		return true;
 	}
@@ -87,26 +74,46 @@ public class MyPaillier {
 	 * @return a^n modulus m
 	 */
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
-		return a.modPow(n, m);
-		/*
-		BigInteger[] arr = new BigInteger[n.toString().length()];
-		BigInteger result = a;
+
+		BigInteger result = BigInteger.ONE;
+		BigInteger tmp = new BigInteger(a.toString());
 		String binaryRep = n.toString(2);
-		arr[0]=a;
-		for (int i=1; i< arr.length; i++){
-			arr[i] = arr[i-1].pow(2).mod(m);
-			if (binaryRep.charAt(i)=='1') result = result.multiply(arr[i]).mod(m);
+		char[] arr = binaryRep.toCharArray();
+		int i = 0;
+		while (i<arr.length){
+			if (arr[arr.length-1-i]=='1') result = result.multiply(tmp).mod(m);
+			i++;
+			tmp = tmp.pow(2).mod(m);
 		}
-		return result;*/
+		return result;
 	}
-	
+
 	/**
 	 * checks if a number m is a power of an integer, 
-	 * (meaning it is definitely not prime.
+	 * (meaning it is definitely not prime)
 	 * @param m is the number to be checked 
 	 * @return true iff m is a power of an integer.
 	 */
+	//TODO: deal with big integers.
 	public static boolean powerOfInteger(BigInteger m) {
+
+		return false;
+		/*
+		boolean ans = false;
+		BigInteger i = new BigInteger("2");
+		double logged = log(m,2);
+		BigInteger log = new BigInteger(Double.toString(Math.ceil(logged)));//limit of loop
+		while (i.compareTo(log)<=0){
+			BigInteger[] r = computeRoot(m, i);
+			if (r[1].compareTo(BigInteger.ZERO)==0){//meaning r is an integer
+				ans = true;
+				break;
+			}
+			else i = i.add(BigInteger.ONE);
+		}
+		return ans;
+		 */
+		/*
 		boolean ans = false;
 		long x = m.longValue();
 		long i = 2;
@@ -119,12 +126,48 @@ public class MyPaillier {
 			else i++;
 		}
 		return ans;
+		 */
 	}
-	
+
+	public static BigInteger[] computeRoot(BigInteger m, BigInteger i) {
+		//TODO: not working!
+		return null;
+		
+		/*
+		BigInteger tmp[] = {m,BigInteger.ZERO};
+		BigInteger high = m;
+		BigInteger low = BigInteger.ZERO;
+		//while (power(m,i))
+		while (Math.abs(Math.pow(tmp, i)-x)>0.0001){//we need epsilon machine here 
+			//simple binary search:
+			tmp= (high.add(low)).divideAndRemainder(new BigInteger("2"));
+			if (power(tmp, i)>x)
+				high = tmp;
+			else if (power(tmp,i)<x) 
+				low = tmp;
+		}
+		//this is to fix the error caused by using a fraction, if necessary: 
+		if (Math.abs(Math.round(tmp)-tmp)<0.00001) tmp = Math.round(tmp);
+		return tmp;
+		*/
+	}
+
 	/**
-	 * returns the i'th root of a number 
+	 * returns m^i, where m and i are both BigIntegers.
 	 */
-	public static double computeRoot(long x, long i) { //is double a problem here?
+	public static BigInteger power(BigInteger m, BigInteger i) {
+		BigInteger result = m;
+		while(i.compareTo(BigInteger.ONE)!=0){
+			result = result.multiply(m);
+			i = i.subtract(BigInteger.ONE);
+		}
+		return result;
+	}
+
+	/**
+	 * returns the i'th root of a number x
+	 */
+	public static double computeRoot(long x, long i) { //only for small numbers
 		double tmp = x;
 		double high = x;
 		double low = 0;
@@ -150,7 +193,7 @@ public class MyPaillier {
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
 		if(n2.equals(new BigInteger("0"))) return n1;
 		else{
-			BigInteger reminder=n1.divideAndRemainder(n2)[1];
+			BigInteger reminder=n1.remainder(n2);
 			n1=n2;
 			n2=reminder;
 			return gcd(n1,n2);
@@ -161,7 +204,7 @@ public class MyPaillier {
 	 * Log for big Integer
 	 * @param a the BigInteger
 	 * @param base the base
-	 * @return Log[base,a]
+	 * @return Log[base,a], in a double type, which is sufficient to numbers with 1024 bits.
 	 */
 	public static double log(BigInteger a, double base) {
 		int b = a.bitLength() - 1;
@@ -174,7 +217,7 @@ public class MyPaillier {
 		}
 		return (Math.log(c) + Math.log(2) * b) / Math.log(base);
 	}
-	
+
 	/**
 	 * Using the extended Euclidean algorithm
 	 * This Function Was Checked with Big Numbers
