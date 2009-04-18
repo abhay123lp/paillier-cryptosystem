@@ -38,8 +38,7 @@ public class MyPaillier {
 	 * 			if m is prime then @return = true;
 	 * 			if m is not prime, @return = false with probability larger then 0.5 
 	 */
-	//TODO: turn back into private!
-	public static boolean isPrime(BigInteger m) {
+	private static boolean isPrime(BigInteger m) {
 		final BigInteger FOUR = new BigInteger("4");
 		final BigInteger THREE = new BigInteger("3");
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
@@ -94,64 +93,11 @@ public class MyPaillier {
 	 * @param m is the number to be checked 
 	 * @return true iff m is a power of an integer.
 	 */
-	//TODO: deal with big integers.
-	public static boolean powerOfInteger(BigInteger m) {
-
+	private static boolean powerOfInteger(BigInteger m) {
+		//Implementation was not made
+		//The probability that a random number is a power of an integer is negligible.
 		return false;
-		/*
-		boolean ans = false;
-		BigInteger i = new BigInteger("2");
-		double logged = log(m,2);
-		BigInteger log = new BigInteger(Double.toString(Math.ceil(logged)));//limit of loop
-		while (i.compareTo(log)<=0){
-			BigInteger[] r = computeRoot(m, i);
-			if (r[1].compareTo(BigInteger.ZERO)==0){//meaning r is an integer
-				ans = true;
-				break;
-			}
-			else i = i.add(BigInteger.ONE);
-		}
-		return ans;
-		 */
-		/*
-		boolean ans = false;
-		long x = m.longValue();
-		long i = 2;
-		while (i<= Math.log10((double)x)/Math.log10(2.0)){
-			double r = computeRoot(x, i);
-			if (Math.round(r)==r){ // meaning r is an integer;
-				ans = true;
-				break;
-			}
-			else i++;
-		}
-		return ans;
-		 */
 	}
-
-	public static BigInteger[] computeRoot(BigInteger m, BigInteger i) {
-		//TODO: not working!
-		return null;
-		
-		/*
-		BigInteger tmp[] = {m,BigInteger.ZERO};
-		BigInteger high = m;
-		BigInteger low = BigInteger.ZERO;
-		//while (power(m,i))
-		while (Math.abs(Math.pow(tmp, i)-x)>0.0001){//we need epsilon machine here 
-			//simple binary search:
-			tmp= (high.add(low)).divideAndRemainder(new BigInteger("2"));
-			if (power(tmp, i)>x)
-				high = tmp;
-			else if (power(tmp,i)<x) 
-				low = tmp;
-		}
-		//this is to fix the error caused by using a fraction, if necessary: 
-		if (Math.abs(Math.round(tmp)-tmp)<0.00001) tmp = Math.round(tmp);
-		return tmp;
-		*/
-	}
-
 	/**
 	 * returns m^i, where m and i are both BigIntegers.
 	 */
@@ -167,7 +113,7 @@ public class MyPaillier {
 	/**
 	 * returns the i'th root of a number x
 	 */
-	public static double computeRoot(long x, long i) { //only for small numbers
+	private static double computeRoot(long x, long i) { //only for small numbers
 		double tmp = x;
 		double high = x;
 		double low = 0;
