@@ -14,6 +14,8 @@ public class VotingSystemWithUsage {
 	
 	
 	public static void main(String[] args) throws SecurityException, IOException {
+		long startTime;
+		long endTime;
 		BigInteger allVotes;
 		Scanner reader = new Scanner(System.in);//IO
 		
@@ -29,6 +31,7 @@ public class VotingSystemWithUsage {
 		numberOfBits = reader.nextInt();
 		
 		logger.info("Stating Voting System");
+		startTime = System.currentTimeMillis();
 		System.out.println("Please insert the amount of voters you want: ");
 		int amountOfVoters = reader.nextInt();
 		logger.info("The amount of voters is: "+amountOfVoters);
@@ -53,9 +56,12 @@ public class VotingSystemWithUsage {
     	//now allVotes have the entire votes encrypted
     	logger.info("******Voting result******");
     	int result = privateKey.decode(allVotes).intValue();
+    	endTime = System.currentTimeMillis();
     	logger.info("The amount of pepole that think that the egg came before the chicken is: "+result);
     	logger.info("The amount of pepole that think that the chicken came before the egg is: "+(amountOfVoters-result));
-    	
+    	logger.info("The vote started at: "+startTime);
+    	logger.info("The vote ended at: "+endTime);
+    	logger.info("Total time for vote: "+(endTime-startTime));
 		
 	}//end of main
 }
