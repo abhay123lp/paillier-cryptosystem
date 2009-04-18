@@ -21,7 +21,7 @@ public class MyPaillier {
 		BigInteger result = BigInteger.ZERO;
 		while (!probablyPrime){
 			//m is supposed to be a random integer with NUM_OF_BITS bits:
-			BigInteger m = new BigInteger(NUM_OF_BITS, new Random());
+			BigInteger m = new BigInteger(NUM_OF_BITS, random);
 			if (isPrime(m)) {
 				probablyPrime = true;
 				result = m;
@@ -46,11 +46,11 @@ public class MyPaillier {
 		// the number is of the desired form
 		if (powerOfInteger(m)) return false;
 		// the number is not a power of integer
-		BigInteger a = new BigInteger(NUM_OF_BITS, new Random());
+		BigInteger a = new BigInteger(NUM_OF_BITS, random);
 		//we need a to be from Zm and not ZERO:
 		a=a.mod(m);
 		while (a.equals(BigInteger.ZERO)){
-			a = new BigInteger(NUM_OF_BITS, new Random());
+			a = new BigInteger(NUM_OF_BITS, random);
 			a=a.mod(m);
 		}
 		if (!gcd(a,m).equals(new BigInteger("1"))) return false;
