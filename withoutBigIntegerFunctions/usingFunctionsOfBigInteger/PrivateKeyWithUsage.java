@@ -4,7 +4,7 @@ package usingFunctionsOfBigInteger;
 import java.math.BigInteger;
 
 
-public class PrivateKeyWithUsage {
+public class PrivateKeyWithUsage extends KeyWithUsage {
 	private BigInteger lambda;
 	private BigInteger mu;
 	private BigInteger n;
@@ -15,15 +15,12 @@ public class PrivateKeyWithUsage {
 		this.n=new BigInteger(n.toString());
 	}
 	
-	public BigInteger getLambda() {
-		return lambda;
-	}
-	
-	public BigInteger getMu() {
-		return mu;
-	}
-	
-	public BigInteger decode(BigInteger cipher){//TODO: 
+	/**
+	 * @param cipher
+	 * @return m = L(c^lambda mod n^2)*mu mod n<br>
+	 * where L(u) = (u-1)/n
+	 */
+	public BigInteger decode(BigInteger cipher){
 		BigInteger m=(MyPallierWithUsage.lFucntion(cipher.modPow(lambda, n.pow(2)), n).multiply(mu)).mod(n);
 		return m;
 	}

@@ -1,6 +1,7 @@
 package usingFunctionsOfBigInteger;
 
 import java.math.BigInteger;
+import java.security.Key;
 import java.util.Random;
 
 /**
@@ -8,18 +9,13 @@ import java.util.Random;
  */
 
 public class MyPallierWithUsage {
-    public final static int NUM_OF_BITS = 32; 
+    public final static int NUM_OF_BITS = 1024; 
     public static Random random = new Random();
     public static BigInteger n;
 
-	/**
-	 * generation of big prime.
-	 * 
-	 * @return a random prime p, p=4k+3, p is being represented with 1024 bits. 
-	 */
-    public static void main(String[] args) {
-		//generate Key
-    	BigInteger p = BigInteger.probablePrime(NUM_OF_BITS, random);
+	public static KeyWithUsage[] generateKey() {
+		KeyWithUsage [] ans = new KeyWithUsage[2];
+		BigInteger p = BigInteger.probablePrime(NUM_OF_BITS, random);
 		BigInteger q = BigInteger.probablePrime(NUM_OF_BITS, random);
 		while(q.equals(p)){//preventing from p==q
 			System.out.println("a");
@@ -37,24 +33,20 @@ public class MyPallierWithUsage {
     	BigInteger mu = lFuntion(g.modPow(lambda, n.pow(2))).modInverse(n);
     	
     	//private Key
-    	PrivateKeyWithUsage privateKey = new PrivateKeyWithUsage(lambda, mu,n);
-    	PublicKeyWithUsage publicKey = new PublicKeyWithUsage(n,g);
+    	ans[0]  = new PrivateKeyWithUsage(lambda, mu,n);
+    	ans[1]  =  new PublicKeyWithUsage(n,g);
     	
-    	
-    	//testing encryption
-    	BigInteger c1 = publicKey.encode(new BigInteger("2"));
-    	BigInteger c2 = publicKey.encode(BigInteger.ONE);
-    	System.out.println("C1: "+c1);
-    	System.out.println("C2: "+c2);
-    	BigInteger m1 = privateKey.decode(c1);
-    	BigInteger m2 = privateKey.decode(c2);
-    	System.out.println("M1: "+m1);
-    	System.out.println("M2: "+m2);
-    	//m3 = c1*c2 mod nSquare
-    	BigInteger m3 = privateKey.decode(c1.multiply(c2));
-    	System.out.println("M3: "+m3);
-    	
-    	
+		return ans;
+	}
+
+
+
+	/**
+	 * generation of big prime.
+	 * 
+	 * @return a random prime p, p=4k+3, p is being represented with 1024 bits. 
+	 */
+    public static void main(String[] args) {
     	
 	}
 
