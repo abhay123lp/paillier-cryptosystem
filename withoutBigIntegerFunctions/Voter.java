@@ -28,7 +28,7 @@ public class Voter {
 	 */
 	public final BigInteger getVote() {
 		BigInteger c = publicKey.encode(new BigInteger(Integer.toString(vote)));
-		VotingSystem.logger.info("Voter nubmer "+voterID+" has sent his incrypted vote: "+c.toString());
+		VotingSystem.logger.info("Voter nubmer "+voterID+" has sent his encrypted vote: "+c.toString());
 		return c;
 	}
 	

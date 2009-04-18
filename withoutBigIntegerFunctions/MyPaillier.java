@@ -262,10 +262,10 @@ public class MyPaillier {
 	 * on the first cell there is a private key (lambda,mu,n)<br>
 	 * on the second cell there is a public key (n,g)
 	 */
-	public Key[] generateKey(){
+	public static Key[] generateKey(){
 		BigInteger p=generatePrime();
 		BigInteger q=generatePrime();
-		while(!q.equals(p)){//preventing from p==q
+		while(q.equals(p)){//preventing from p==q
 			q=generatePrime();
 		}
 		BigInteger n=p.multiply(q);//n=p*q
