@@ -24,10 +24,8 @@ public class PrivateKeyWithUsage {
 	}
 	
 	public BigInteger decode(BigInteger cipher){//TODO: 
-//		BigInteger m=(MyPallierWithUsage.lFucntion(MyPallierWithUsage.powerMod(cipher, lambda, n.pow(2)), n).multiply(mu)).mod(n);
-//		return m;
-		return null;
-		
+		BigInteger m=(MyPallierWithUsage.lFucntion(cipher.modPow(lambda, n.pow(2)), n).multiply(mu)).mod(n);
+		return m;
 	}
 	
 }

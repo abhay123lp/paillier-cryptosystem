@@ -8,7 +8,7 @@ import java.util.Random;
  */
 
 public class MyPallierWithUsage {
-    public final static int NUM_OF_BITS = 1024; 
+    public final static int NUM_OF_BITS = 32; 
     public static Random random = new Random();
     public static BigInteger n;
 
@@ -21,7 +21,8 @@ public class MyPallierWithUsage {
 		//generate Key
     	BigInteger p = BigInteger.probablePrime(NUM_OF_BITS, random);
 		BigInteger q = BigInteger.probablePrime(NUM_OF_BITS, random);
-		while(!q.equals(p)){//preventing from p==q
+		while(q.equals(p)){//preventing from p==q
+			System.out.println("a");
 			q=BigInteger.probablePrime(NUM_OF_BITS, random);
 		}
 		n = p.multiply(q); //n=p*q
@@ -36,8 +37,22 @@ public class MyPallierWithUsage {
     	BigInteger mu = lFuntion(g.modPow(lambda, n.pow(2))).modInverse(n);
     	
     	//private Key
-    	Key privateKey = new Key(lambda, mu);
-    	Key publicKey = new Key(n,g);
+    	PrivateKeyWithUsage privateKey = new PrivateKeyWithUsage(lambda, mu,n);
+    	PublicKeyWithUsage publicKey = new PublicKeyWithUsage(n,g);
+    	
+    	
+    	//testing encryption
+    	BigInteger c1 = publicKey.encode(new BigInteger("2"));
+    	BigInteger c2 = publicKey.encode(BigInteger.ONE);
+    	System.out.println("C1: "+c1);
+    	System.out.println("C2: "+c2);
+    	BigInteger m1 = privateKey.decode(c1);
+    	BigInteger m2 = privateKey.decode(c2);
+    	System.out.println("M1: "+m1);
+    	System.out.println("M2: "+m2);
+    	//m3 = c1*c2 mod nSquare
+    	BigInteger m3 = privateKey.decode(c1.multiply(c2));
+    	System.out.println("M3: "+m3);
     	
     	
     	
@@ -48,9 +63,6 @@ public class MyPallierWithUsage {
 	private static BigInteger lFuntion(BigInteger input) {
 		return (input.subtract(BigInteger.ONE)).divide(n);
 	}
-
-
-
 
 
 	//Generating Key

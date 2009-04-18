@@ -213,6 +213,12 @@ public class MyPaillier {
 
 	//Generating Key
 	//TODO: Complete
+	/**
+	 * This function generate a public and private key
+	 * @return an array of keys of size 2 <br>
+	 * on the first cell there is a private key (lambda,mu,n)<br>
+	 * on the second cell there is a public key (n,g)
+	 */
 	public Key[] generateKey(){
 		BigInteger p=generatePrime();
 		BigInteger q=generatePrime();
