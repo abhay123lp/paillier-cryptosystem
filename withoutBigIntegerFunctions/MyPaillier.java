@@ -9,8 +9,6 @@ public class MyPaillier {
 	public final static int NUM_OF_BITS = VotingSystem.numberOfBits; 
 	public static Random random = new Random();
 
-
-
 	/**
 	 * generation of big prime.
 	 * 

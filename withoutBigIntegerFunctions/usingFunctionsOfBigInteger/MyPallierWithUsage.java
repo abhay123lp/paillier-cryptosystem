@@ -69,7 +69,7 @@ public class MyPallierWithUsage {
 		String nString=n.toString();
 		BigInteger ans;
 		int temp, i=0;
-		//generating random number from [0,n2)
+		//generating random number from [0,n)
 		while(i<nString.length()){
 			temp = random.nextInt(nString.charAt(i)-47);
 			sb.append(temp);
@@ -83,7 +83,7 @@ public class MyPallierWithUsage {
 		
 		ans=new BigInteger(sb.toString());
 		
-		//Repeating the process until gcd(ans,n^2) equals one
+		//Repeating the process until gcd(ans,n) equals one
 		return ans.gcd(n).equals(BigInteger.ONE)? ans : randomZStar(n);
 	}//end of randomZStarsqr
 	

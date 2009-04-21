@@ -59,9 +59,6 @@ public class VotingSystem {
     	endTime = System.currentTimeMillis();
     	logger.info("The amount of pepole that think that the egg came before the chicken is: "+result);
     	logger.info("The amount of pepole that think that the chicken came before the egg is: "+(amountOfVoters-result));
-    	//it's nicer this way:
-    	//logger.info("The vote started at: "+startTime);
-    	//logger.info("The vote ended at: "+endTime);
     	logger.info("Total time for vote: "+((endTime-startTime)/1000.0) + " Seconds.");
 		
 	}//end of main
