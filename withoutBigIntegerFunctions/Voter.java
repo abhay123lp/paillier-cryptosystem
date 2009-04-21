@@ -6,6 +6,7 @@ public class Voter {
 	private int vote;
 	private int voterID;
 	PublicKey publicKey;
+	private static Random random = new Random();
 	
 	/**
 	 * Voter Constructor <br>
@@ -19,7 +20,7 @@ public class Voter {
 		this.voterID=counter; // initialization voter id
 		counter++;
 		this.publicKey = _publicKey; //setting public key
-		vote = new Random().nextInt(2); //generating vote between 0 and 1
+		vote = random.nextInt(2); //generating vote between 0 and 1
 		VotingSystem.logger.info("Voter number "+voterID+" has been created. and voted for: "+vote);
 	}
 
@@ -28,7 +29,7 @@ public class Voter {
 	 */
 	public final BigInteger getVote() {
 		BigInteger c = publicKey.encode(new BigInteger(Integer.toString(vote)));
-		VotingSystem.logger.info("Voter nubmer "+voterID+" has sent his encrypted vote: "+c.toString());
+		VotingSystem.logger.fine("Voter nubmer "+voterID+" has sent his encrypted vote: "+c.toString());
 		return c;
 	}
 	

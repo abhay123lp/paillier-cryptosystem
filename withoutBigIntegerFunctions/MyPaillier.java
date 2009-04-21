@@ -2,12 +2,18 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /**
+ * 
  * @author Ika Bar-Menachem, Nir Hemed
  */
 
 public class MyPaillier {
 	public final static int NUM_OF_BITS = VotingSystem.numberOfBits; 
 	public static Random random = new Random();
+	//Big Integer constants
+	public final static BigInteger TWO = new BigInteger("2");
+	public final static BigInteger THREE = new BigInteger("3");
+	public final static BigInteger FOUR = new BigInteger("4");
+	
 
 	/**
 	 * generation of big prime.
@@ -17,9 +23,10 @@ public class MyPaillier {
 	public static BigInteger generatePrime(){
 		boolean probablyPrime = false;
 		BigInteger result = BigInteger.ZERO;
+		BigInteger m;
 		while (!probablyPrime){
 			//m is supposed to be a random integer with NUM_OF_BITS bits:
-			BigInteger m = new BigInteger(NUM_OF_BITS, random);
+			m = new BigInteger(NUM_OF_BITS, random);
 			if (isPrime(m)) {
 				probablyPrime = true;
 				result = m;
@@ -37,8 +44,6 @@ public class MyPaillier {
 	 * 			if m is not prime, @return = false with probability larger then 0.5 
 	 */
 	private static boolean isPrime(BigInteger m) {
-		final BigInteger FOUR = new BigInteger("4");
-		final BigInteger THREE = new BigInteger("3");
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
 		// the number is of the desired form
 		if (powerOfInteger(m)) return false;
@@ -50,12 +55,12 @@ public class MyPaillier {
 			a = new BigInteger(NUM_OF_BITS, random);
 			a=a.mod(m);
 		}
-		if (!gcd(a,m).equals(new BigInteger("1"))) return false;
+		if (!gcd(a,m).equals(BigInteger.ONE)) return false;
 		else{
-			BigInteger b = powerMod(a, new BigInteger ("2"), m);
+			BigInteger b = powerMod(a, TWO, m);
 			BigInteger c = powerMod(b,(m.add(BigInteger.ONE)).divide(FOUR), m);
 		
-			if (!b.equals(powerMod(c, new BigInteger("2"), m))) return false;
+			if (!b.equals(powerMod(c, TWO, m))) return false;
 
 			if (!c.equals(a.mod(m)) && !c.equals((a.negate()).mod(m))) return false;
 		}
@@ -74,11 +79,11 @@ public class MyPaillier {
 
 		BigInteger result = BigInteger.ONE;
 		BigInteger tmp = new BigInteger(a.toString());
-		String binaryRep = n.toString(2);
-		char[] arr = binaryRep.toCharArray();
+		char[] arr = n.toString(2).toCharArray();
 		int i = 0;
 		while (i<arr.length){
-			if (arr[arr.length-1-i]=='1') result = result.multiply(tmp).mod(m);
+			if (arr[arr.length-1-i]=='1') 
+				result = result.multiply(tmp).mod(m);
 			i++;
 			tmp = tmp.pow(2).mod(m);
 		}
@@ -135,7 +140,7 @@ public class MyPaillier {
 	 * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
 	 */
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
-		if(n2.equals(new BigInteger("0"))) return n1;
+		if(n2.equals(BigInteger.ZERO)) return n1;
 		else{
 			BigInteger reminder=n1.remainder(n2);
 			n1=n2;
@@ -199,7 +204,6 @@ public class MyPaillier {
 
 
 	//Generating Key
-	//TODO: Complete
 	/**
 	 * This function generate a public and private key
 	 * @return an array of keys of size 2 <br>
@@ -212,7 +216,7 @@ public class MyPaillier {
 		while(q.equals(p)){//preventing from p==q
 			q=generatePrime();
 		}
-		BigInteger n=p.multiply(q);//n=p*q
+		BigInteger n = p.multiply(q);//n=p*q
 		//lambda=lcm(p-1,q-1)
 		BigInteger lambda=(p.subtract(BigInteger.ONE)).multiply(q.subtract(BigInteger.ONE));
 		lambda=lambda.divide(gcd(p.subtract(BigInteger.ONE),q.subtract(BigInteger.ONE)));
