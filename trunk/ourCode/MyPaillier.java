@@ -5,6 +5,8 @@ import java.util.Random;
 /**
  * 
  * @author Ika Bar-Menachem, Nir Hemed
+ * This class implements mathematical function used to create encryption system<br>
+ * Based on the Pailler cryptoSystem.
  */
 
 public class MyPaillier {
@@ -201,15 +203,15 @@ public class MyPaillier {
 		}
 		return lastX.mod(ans);
 		
-	}
+	}//end of calculateInverse
 
 
 	//Generating Key
 	/**
 	 * This function generate a public and private key
 	 * @return an array of keys of size 2 <br>
-	 * on the first cell there is a private key (lambda,mu,n)<br>
-	 * on the second cell there is a public key (n,g)
+	 * the first cell contains the private key (lambda,mu,n)<br>
+	 * the second cell contains the public key (n,g)
 	 */
 	public static Key[] generateKey(){
 		BigInteger p=generatePrime();
@@ -227,15 +229,13 @@ public class MyPaillier {
 		//calculate mu
 		BigInteger lInput=powerMod(g, lambda, n.pow(2));
 		
-		BigInteger mu=calculateInverse(lFucntion(lInput,n), n);//TODO: recheck this line
-		
+		BigInteger mu=calculateInverse(lFucntion(lInput,n), n);
 		
 		Key[] ans=new Key[2];
 		ans[0]= new PrivateKey(lambda,mu,n);
 		ans[1]= new PublicKey(n,g);
 		return ans;
-		
-	}
+	}//end of generateKey
 	
 	
 	/**
@@ -288,8 +288,4 @@ public class MyPaillier {
 		}
 		return sb.toString();
 	}//end of generateRandomNubmer
-	
-	//Encoding
-	
-	//Decoding
-}
+}//end of MyPaillier

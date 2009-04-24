@@ -6,7 +6,13 @@ import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
-
+/**
+ * 
+ * @author Ika Bar-Menachem and Nir Hemed
+ * this class demonstrate the use of Paillier cryptoSystem by creating a given amount of voters<br>
+ * that vote randomly from {0,1} and submit there vote after encryption with public key.<br>
+ * after the vote is complete a voting count is done using the homeomorphic properties of the Paillier cryptoSystem
+ */
 public class VotingSystem {
 	
 	public static Logger logger = Logger.getLogger("CryptoLogger");
@@ -14,9 +20,8 @@ public class VotingSystem {
 	
 	
 	public static void main(String[] args) throws SecurityException, IOException {
-		long startTime;
-		long endTime;
-		BigInteger allVotes;
+		long startTime, endTime;
+		BigInteger voteCount;
 		Scanner reader = new Scanner(System.in);//IO
 		
 		//logger
@@ -49,14 +54,14 @@ public class VotingSystem {
 		}
     	
     	//submitting the votes (encrypted of course)
-    	allVotes = kalpi[0].getVote();//assuming there is one voter minimum
+    	voteCount = kalpi[0].getVote();//assuming there is one voter minimum
     	for (int i = 1; i < kalpi.length; i++) {//voting
-			allVotes = allVotes.multiply(kalpi[i].getVote());
+			voteCount = voteCount.multiply(kalpi[i].getVote());
 		}
     	
     	//now allVotes have the entire votes encrypted
     	logger.info("******Voting result******");
-    	int result = privateKey.decode(allVotes).intValue();
+    	int result = privateKey.decode(voteCount).intValue();
     	endTime = System.currentTimeMillis();
     	logger.info("The amount of pepole that think that the egg came before the chicken is: "+result);
     	logger.info("The amount of pepole that think that the chicken came before the egg is: "+(amountOfVoters-result));
