@@ -50,6 +50,7 @@ public class VotingSystemWithUsage {
 		}
     	
     	//submitting the votes (encrypted of course)
+    	logger.info("Stating vote count");
     	allVotes = kalpi[0].getVote();//assuming there is one voter minimum
     	for (int i = 1; i < kalpi.length; i++) {//voting
 			allVotes = allVotes.multiply(kalpi[i].getVote());

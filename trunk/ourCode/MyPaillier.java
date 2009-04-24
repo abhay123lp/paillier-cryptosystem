@@ -75,7 +75,7 @@ public class MyPaillier {
 	 * @param a the number to be powered
 	 * @param n the power
 	 * @param m modulus
-	 * @Pre n>=1
+	 * @Pre n >=1
 	 * @return a^n modulus m
 	 */
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
@@ -173,9 +173,9 @@ public class MyPaillier {
 	/**
 	 * Using the extended Euclidean algorithm
 	 * This Function Was Checked with Big Numbers
-	 * @param number, the number we want to calculate the inverse to
-	 * @param n the Ring of g*_n
-	 * @return answer, where answer*n== 0 mod g*_n
+	 * @param number , the number we want to calculate the inverse to
+	 * @param moduluN , is used to create a number from the Ring of g*_moduluN
+	 * @return answer , where answer*n== 0 mod g*_n
 	 */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;
@@ -249,7 +249,7 @@ public class MyPaillier {
 	}
 	
 	/**
-	 * @param n>0
+	 * @param n >0
 	 * @return a random number g where g is from Z*_n
 	 */
 	public static  BigInteger randomZStar(final BigInteger n) {

@@ -14,8 +14,8 @@ public class PrivateKey extends Key{
 	
 	/**
 	 * Constructor<br>
-	 * @param lambda= lcm of (p-1,q-1)
-	 * @param mu= (L(g^lambda mod n^2)^-1) mod n
+	 * @param lambda = lcm of (p-1,q-1)
+	 * @param mu = (L(g^lambda mod n^2)^-1) mod n
 	 * @param n = p*q Two Random numbers
 	 */
 	public PrivateKey(BigInteger lambda, BigInteger mu, BigInteger n){

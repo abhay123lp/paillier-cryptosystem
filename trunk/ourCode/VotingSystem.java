@@ -54,13 +54,14 @@ public class VotingSystem {
 		}
     	
     	//submitting the votes (encrypted of course)
+    	logger.info("Stating vote count");
     	voteCount = kalpi[0].getVote();//assuming there is one voter minimum
     	for (int i = 1; i < kalpi.length; i++) {//voting
 			voteCount = voteCount.multiply(kalpi[i].getVote());
 		}
     	
     	//now allVotes have the entire votes encrypted
-    	logger.info("******Voting result******");
+    	logger.info("******Voting result of Our System******");
     	int result = privateKey.decode(voteCount).intValue();
     	endTime = System.currentTimeMillis();
     	logger.info("The amount of pepole that think that the egg came before the chicken is: "+result);
