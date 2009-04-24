@@ -41,14 +41,6 @@ public class MyPallierWithUsage {
 
 
 
-	/**
-	 * generation of big prime.
-	 * 
-	 * @return a random prime p, p=4k+3, p is being represented with 1024 bits. 
-	 */
-    public static void main(String[] args) {
-    	
-	}
 
 
 
@@ -61,7 +53,7 @@ public class MyPallierWithUsage {
 	
 	
 	/**
-	 * @param n>0
+	 * @param n
 	 * @return a random number g where g is from Z*_n
 	 */
 	public static  BigInteger randomZStar(final BigInteger n) {
@@ -111,9 +103,5 @@ public class MyPallierWithUsage {
 		
 		return (input.subtract(BigInteger.ONE).divide(n));
 	}
-	
-	//Encoding
-	
-	//Decoding
 }
 

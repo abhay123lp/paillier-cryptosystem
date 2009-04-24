@@ -15,7 +15,7 @@ public class Voter {
 	 * 1. sets the public key.<br>
 	 * 2. randomly choose a secret vote between 0 and 1.<br>
 	 * 3. log his choice in the logger.<br>
-	 * @param _publicKey, a public key that the voter use in order to send his vote.
+	 * @param _publicKey , a public key that the voter use in order to send his vote.
 	 */
 	public Voter(PublicKey _publicKey){
 		this.voterID=counter; // initialization voter id
