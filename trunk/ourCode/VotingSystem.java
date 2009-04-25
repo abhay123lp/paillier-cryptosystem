@@ -55,9 +55,11 @@ public class VotingSystem {
     	
     	//submitting the votes (encrypted of course)
     	logger.info("Stating vote count");
+    	BigInteger nSquare = publicKey.getN().pow(2);
     	voteCount = kalpi[0].getVote();//assuming there is one voter minimum
     	for (int i = 1; i < kalpi.length; i++) {//voting
-			voteCount = voteCount.multiply(kalpi[i].getVote());
+    		logger.info("now multipling the "+i+" vote");
+			voteCount = (voteCount.multiply(kalpi[i].getVote())).mod(nSquare);
 		}
     	
     	//now allVotes have the entire votes encrypted

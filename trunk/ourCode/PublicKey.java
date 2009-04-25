@@ -35,5 +35,10 @@ public class PublicKey extends Key {
 	public String toString(){
 		return "Public Key:/n n = "+n+"/n g = "+g;
 	}
+
+	public BigInteger getN() {
+		
+		return n;
+	}
 	
 }//end of PublicKey

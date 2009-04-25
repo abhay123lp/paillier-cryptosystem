@@ -3,7 +3,6 @@ import java.math.BigInteger;
 import java.util.Random;
 
 /**
- * 
  * @author Ika Bar-Menachem, Nir Hemed
  * This class implements mathematical function used to create encryption system<br>
  * Based on the Pailler cryptoSystem.
@@ -97,7 +96,7 @@ public class MyPaillier {
 	 * checks if a number m is a power of an integer, 
 	 * (meaning it is definitely not prime)
 	 * @param m is the number to be checked 
-	 * @return true iff m is a power of an integer.
+	 * @return true if and only if m is a power of an integer.
 	 */
 	private static boolean powerOfInteger(BigInteger m) {
 		//Implementation was not made
@@ -171,11 +170,11 @@ public class MyPaillier {
 	}
 
 	/**
-	 * Using the extended Euclidean algorithm
-	 * This Function Was Checked with Big Numbers
+	 * Using the extended Euclidean algorithm<br>
+	 * 
 	 * @param number , the number we want to calculate the inverse to
 	 * @param moduluN , is used to create a number from the Ring of g*_moduluN
-	 * @return answer , where answer*n== 0 mod g*_n
+	 * @return answer , where answer*number == 0 mod g*_moduluN
 	 */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;
