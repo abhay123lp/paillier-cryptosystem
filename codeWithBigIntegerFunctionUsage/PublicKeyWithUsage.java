@@ -19,6 +19,10 @@ public class PublicKeyWithUsage extends KeyWithUsage{
 			BigInteger c = g.modPow(message, nSquare).multiply(r.modPow(n, nSquare)).mod(nSquare);
 			return c;
 		}//end of encode
+
+		public BigInteger getN() {
+			return n;
+		}
 		
 		
 }//end of PublicKey
