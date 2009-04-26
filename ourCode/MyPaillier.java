@@ -159,13 +159,26 @@ public class MyPaillier {
 	 * 
      */
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
-		if(n2.equals(BigInteger.ZERO)) return n1;
+		if (n1.equals(BigInteger.ZERO)) return n2;
+		if (n2.equals(BigInteger.ZERO)) return n1;
+		// n1 and n2 even
+		if ((n1.and(BigInteger.ONE)).equals(BigInteger.ZERO) && (n2.and(BigInteger.ONE).equals(BigInteger.ZERO))) 
+				return gcd(n1.shiftRight(1), n2.shiftRight(1)).shiftLeft(1);
+		// n1 is even, n2 is odd
+		else if ((n1.and(BigInteger.ONE).equals(BigInteger.ZERO))) return gcd(n1.shiftRight(1), n2);
+		// n1 is odd, n2 is even
+		else if ((n2.and(BigInteger.ONE).equals(BigInteger.ZERO))) return gcd(n1, n2.shiftRight(1));
+		// n1 and n2 odd, n1 >= n2
+		else if (n1.compareTo(n2) >= 0) return gcd((n1.subtract(n2)).shiftRight(1), n2);
+		// n1 and n2 odd, n1 < n2
+		else return gcd(n1, (n2.subtract(n1)).shiftRight(1));
+		/*if(n2.equals(BigInteger.ZERO)) return n1;
 		else{
 			BigInteger reminder=n1.remainder(n2);
 			n1=n2;
 			n2=reminder;
 			return gcd(n1,n2);
-		}
+		}*/
 	}//end of gcd
 
 
