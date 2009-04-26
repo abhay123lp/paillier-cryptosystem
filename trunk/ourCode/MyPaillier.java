@@ -15,16 +15,16 @@ public class MyPaillier {
 	public final static BigInteger TWO = new BigInteger("2");
 	public final static BigInteger THREE = new BigInteger("3");
 	public final static BigInteger FOUR = new BigInteger("4");
-	
 
 
-    /**
-     * Generation of a big prime.<br>
+
+	/**
+	 * Generation of a big prime.<br>
 	 * This method randomly casts a number with NUM_OF_BITS bits, and uses the algorithm learned in class to determine if it is prime.<br>
 	 * <b>Complexity:</b> since we are only checking for a number that is of the form 4k+3, k is positive integer, and taking into consideration
 	 * The density of primes, it is likely that this method will return after O(NUM_OF_BITS) casts.
-     * @return a random prime p, p=4k+3, p is being represented with NUM_OF_BITS bits.
-     */
+	 * @return a random prime p, p=4k+3, p is being represented with NUM_OF_BITS bits.
+	 */
 	public static BigInteger generatePrime(){
 		boolean probablyPrime = false;
 		BigInteger result = BigInteger.ZERO;
@@ -41,14 +41,14 @@ public class MyPaillier {
 	}//end of generatePrime
 
 
-    /**
-     * Checks if a given number is prime, as learned in class.<br>
+	/**
+	 * Checks if a given number is prime, as learned in class.<br>
 	 * <b>Complexity:</b> at most we will perform 1 GCD and 3 powerMod: O(NUM_OF_BITS)<br>
-     * @param m - the number to be checked.
-     * @return
-     *  If m is prime then return true.<br>
-     *  If m is not prime return false with probability larger then 0.5
-     */
+	 * @param m - the number to be checked.
+	 * @return
+	 *  If m is prime then return true.<br>
+	 *  If m is not prime return false with probability larger then 0.5
+	 */
 	private static boolean isPrime(BigInteger m) {
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
 		// the number is of the desired form
@@ -65,7 +65,7 @@ public class MyPaillier {
 		else{
 			BigInteger b = powerMod(a, TWO, m);
 			BigInteger c = powerMod(b,(m.add(BigInteger.ONE)).divide(FOUR), m);
-		
+
 			if (!b.equals(powerMod(c, TWO, m))) return false;
 
 			if (!c.equals(a.mod(m)) && !c.equals((a.negate()).mod(m))) return false;
@@ -74,19 +74,19 @@ public class MyPaillier {
 	}
 
 
-    /**
-     * power a number a by n, modulus m
-     * @param a the number to be powered
-     * @param n the power
-     * @param m modulus
-     * @Pre n >=1
+	/**
+	 * power a number a by n, modulus m
+	 * @param a the number to be powered
+	 * @param n the power
+	 * @param m modulus
+	 * @Pre n >=1
 	 *
 	 * this method uses the general principal of exponention by squaring and uses relatively small multiplications (modulared to m)<br> 
 	 * to reduce both memory usage and time complexity.<br>
 	 * <b>time complexity:</b> The running time of this algorithm is O(log exponent).<br> 
 	 *
-     * @return a^n modulus m
-     */
+	 * @return a^n modulus m
+	 */
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
 
 		BigInteger result = BigInteger.ONE;
@@ -126,11 +126,11 @@ public class MyPaillier {
 	}
 
 	/**
-     * This method is not necessary (and was not used) in the final version of the project.<br>
+	 * This method is not necessary (and was not used) in the final version of the project.<br>
 	 * It uses simple binary search to find an approximation to an i'th root for a number x, and time complexity is of course O(log(x))<br>
 	 * when trying to determine whether a given number is a power of an integer (in polylogarithmic time - O((log(x)^2) we can use this method.<br>
 	 * @return the i'th root of a number x
-     */
+	 */
 	@SuppressWarnings("unused")
 	private static double computeRoot(long x, long i) { //only for small numbers
 		double tmp = x;
@@ -150,28 +150,47 @@ public class MyPaillier {
 	}
 
 
-    /**
-     * GCD for BigInteger<br>
-     * @param n1 a bigNubmer
-     * @param n2 a bigNubmer
-     * <b>complexity :</b> O((NUM_OF_BITS)^3)
-     * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2<br>
+	/**
+	 * GCD for BigInteger<br>
+	 * @param n1 a bigNubmer
+	 * @param n2 a bigNubmer
+	 * <b>complexity :</b> O((NUM_OF_BITS)^3)
+	 * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2<br>
 	 * 
-     */
+	 */
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
 		if (n1.equals(BigInteger.ZERO)) return n2;
 		if (n2.equals(BigInteger.ZERO)) return n1;
-		// n1 and n2 even
-		if ((n1.and(BigInteger.ONE)).equals(BigInteger.ZERO) && (n2.and(BigInteger.ONE).equals(BigInteger.ZERO))) 
-				return gcd(n1.shiftRight(1), n2.shiftRight(1)).shiftLeft(1);
-		// n1 is even, n2 is odd
-		else if ((n1.and(BigInteger.ONE).equals(BigInteger.ZERO))) return gcd(n1.shiftRight(1), n2);
-		// n1 is odd, n2 is even
-		else if ((n2.and(BigInteger.ONE).equals(BigInteger.ZERO))) return gcd(n1, n2.shiftRight(1));
-		// n1 and n2 odd, n1 >= n2
-		else if (n1.compareTo(n2) >= 0) return gcd((n1.subtract(n2)).shiftRight(1), n2);
-		// n1 and n2 odd, n1 < n2
-		else return gcd(n1, (n2.subtract(n1)).shiftRight(1));
+		/* Let shift := log K, where K is the greatest power of 2
+        dividing both n1 and n2. */
+		int shift;
+		for (shift = 0; ((n1.or(n2)).and(BigInteger.ONE)).equals(BigInteger.ZERO); ++shift) {
+			n1 = n1.shiftRight(1);
+			n2 = n2.shiftRight(1);
+		}
+		while ((n1.and(BigInteger.ONE)).equals(BigInteger.ZERO))
+			n1 = n1.shiftRight(1);
+
+		/* From here on, n1 is always odd. */
+
+		while (!n2.equals(BigInteger.ZERO)){
+			while ((n2.and(BigInteger.ONE)).equals(BigInteger.ZERO))
+				n2 = n2.shiftRight(1);
+
+			/* Now n1 and n2 are both odd, so diff(n1, n2) is even.
+            Let n1 = min(n1, n2), n2 = diff(n1, n2)/2. */
+			if (n1.compareTo(n2) < 0) {
+				n2 = n2.subtract(n1);
+			} else {
+				BigInteger diff = n1.subtract(n2);
+				n1 = n2;
+				n2 = diff;
+			}
+			n2 = n2.shiftRight(1);
+		} 
+
+		return n1.shiftLeft(shift);
+
 		/*if(n2.equals(BigInteger.ZERO)) return n1;
 		else{
 			BigInteger reminder=n1.remainder(n2);
@@ -182,15 +201,15 @@ public class MyPaillier {
 	}//end of gcd
 
 
-    /**
-     * Using the extended Euclidean algorithm
-     * This Function Was Checked with Big Numbers
-     * @param number , the number we want to calculate the inverse to
-     * @param moduluN , is used to create a number from the Ring of g*_moduluN<br>
-     * <b>Complexity:</b> O((NUM_OF_BITS)^3).<br>
-     * @return answer , where answer*n== 0 mod g*_n
+	/**
+	 * Using the extended Euclidean algorithm
+	 * This Function Was Checked with Big Numbers
+	 * @param number , the number we want to calculate the inverse to
+	 * @param moduluN , is used to create a number from the Ring of g*_moduluN<br>
+	 * <b>Complexity:</b> O((NUM_OF_BITS)^3).<br>
+	 * @return answer , where answer*n== 0 mod g*_n
 	 *
-     */
+	 */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;
 		BigInteger x=BigInteger.ZERO;
@@ -201,22 +220,22 @@ public class MyPaillier {
 		BigInteger temp;
 		while(moduluN.equals(BigInteger.ZERO)==false){
 			quotient=number.divide(moduluN);
-			
+
 			temp=moduluN;
 			moduluN=number.mod(moduluN);
 			number=temp;
-			
+
 			temp=x;
 			x=lastX.subtract(quotient.multiply(x));
 			lastX=temp;
-			
+
 			temp=y;
 			y=lastY.subtract(quotient.multiply(y));
 			lastY=temp;
-			
+
 		}
 		return lastX.mod(ans);
-		
+
 	}//end of calculateInverse
 
 
@@ -243,26 +262,26 @@ public class MyPaillier {
 		BigInteger g=randomZStar(nSquare);
 		//calculate mu
 		BigInteger lInput=powerMod(g, lambda, nSquare);
-		
+
 		BigInteger mu=calculateInverse(lFucntion(lInput,n), n);
-		
+
 		Key[] ans=new Key[2];
 		ans[0]= new PrivateKey(lambda,mu,n);
 		ans[1]= new PublicKey(n,g);
 		return ans;
 	}//end of generateKey
-	
-	
+
+
 	/**
 	 * @param input
 	 * @param n
 	 * @return (input-1)/n
 	 */
 	public static BigInteger lFucntion(BigInteger input, BigInteger n) {
-		
+
 		return (input.subtract(BigInteger.ONE).divide(n));
 	}
-	
+
 	/**
 	 * @param n >0
 	 * @return a random number g where g is from Z*_n
@@ -281,16 +300,16 @@ public class MyPaillier {
 				break;
 			}
 			i++;
-			
+
 		}//end of while
-		
-		
+
+
 		ans=new BigInteger(sb.toString());
-		
+
 		//Repeating the process until gcd(ans,n^2) equals one
 		return gcd(ans,n).equals(BigInteger.ONE)? ans : randomZStar(n);
 	}//end of randomZStarsqr
-	
+
 	/**
 	 * @param amountOfDigits, the size of the number to generate
 	 * @return a random number of "amountOfDigits" digits
