@@ -154,9 +154,9 @@ public class MyPaillier {
      * GCD for BigInteger<br>
      * @param n1 a bigNubmer
      * @param n2 a bigNubmer
-     * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
+     * <b>complexity :</b> O((NUM_OF_BITS)^3)
+     * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2<br>
 	 * 
-	 * <b>complexity :</b> O((NUM_OF_BITS)^3)
      */
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
 		if(n2.equals(BigInteger.ZERO)) return n1;
@@ -173,10 +173,10 @@ public class MyPaillier {
      * Using the extended Euclidean algorithm
      * This Function Was Checked with Big Numbers
      * @param number , the number we want to calculate the inverse to
-     * @param moduluN , is used to create a number from the Ring of g*_moduluN
+     * @param moduluN , is used to create a number from the Ring of g*_moduluN<br>
+     * <b>Complexity:</b> O((NUM_OF_BITS)^3).<br>
      * @return answer , where answer*n== 0 mod g*_n
 	 *
-	 * <b>Complexity:</b> O((NUM_OF_BITS)^3).
      */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;
