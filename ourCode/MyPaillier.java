@@ -17,11 +17,14 @@ public class MyPaillier {
 	public final static BigInteger FOUR = new BigInteger("4");
 	
 
-	/**
-	 * generation of big prime.
-	 * 
-	 * @return a random prime p, p=4k+3, p is being represented with NUM_OF_BITS bits. 
-	 */
+
+    /**
+     * Generation of a big prime.<br>
+	 * This method randomly casts a number with NUM_OF_BITS bits, and uses the algorithm learned in class to determine if it is prime.<br>
+	 * <b>Complexity:</b> since we are only checking for a number that is of the form 4k+3, k is positive integer, and taking into consideration
+	 * The density of primes, it is likely that this method will return after O(NUM_OF_BITS) casts.
+     * @return a random prime p, p=4k+3, p is being represented with NUM_OF_BITS bits.
+     */
 	public static BigInteger generatePrime(){
 		boolean probablyPrime = false;
 		BigInteger result = BigInteger.ZERO;
@@ -37,14 +40,15 @@ public class MyPaillier {
 		return result;
 	}//end of generatePrime
 
-	/**
-	 * prime check
-	 * 
-	 * @param m - the number to be checked.
-	 * @return :
-	 * 			if m is prime then @return = true;
-	 * 			if m is not prime, @return = false with probability larger then 0.5 
-	 */
+
+    /**
+     * Checks if a given number is prime, as learned in class.<br>
+	 * <b>Complexity:</b> at most we will perform 1 GCD and 3 powerMod: O(NUM_OF_BITS)<br>
+     * @param m - the number to be checked.
+     * @return
+     *  If m is prime then return true.<br>
+     *  If m is not prime return false with probability larger then 0.5
+     */
 	private static boolean isPrime(BigInteger m) {
 		if (!(m.mod(FOUR)).equals(THREE)) return false;
 		// the number is of the desired form
@@ -69,14 +73,20 @@ public class MyPaillier {
 		return true;
 	}
 
-	/**
-	 * power a number a modulus m
-	 * @param a the number to be powered
-	 * @param n the power
-	 * @param m modulus
-	 * @Pre n >=1
-	 * @return a^n modulus m
-	 */
+
+    /**
+     * power a number a by n, modulus m
+     * @param a the number to be powered
+     * @param n the power
+     * @param m modulus
+     * @Pre n >=1
+	 *
+	 * this method uses the general principal of exponention by squaring and uses relatively small multiplications (modulared to m)<br> 
+	 * to reduce both memory usage and time complexity.<br>
+	 * <b>time complexity:</b> The running time of this algorithm is O(log exponent).<br> 
+	 *
+     * @return a^n modulus m
+     */
 	public static BigInteger powerMod(BigInteger a, BigInteger n, BigInteger m) {
 
 		BigInteger result = BigInteger.ONE;
@@ -104,7 +114,7 @@ public class MyPaillier {
 		return false;
 	}
 	/**
-	 * returns m^i, where m and i are both BigIntegers.
+	 * @return m^i, where m and i are both BigIntegers.
 	 */
 	public static BigInteger power(BigInteger m, BigInteger i) {
 		BigInteger result = m;
@@ -116,8 +126,12 @@ public class MyPaillier {
 	}
 
 	/**
-	 * returns the i'th root of a number x
-	 */
+     * This method is not necessary (and was not used) in the final version of the project.<br>
+	 * It uses simple binary search to find an approximation to an i'th root for a number x, and time complexity is of course O(log(x))<br>
+	 * when trying to determine whether a given number is a power of an integer (in polylogarithmic time - O((log(x)^2) we can use this method.<br>
+	 * @return the i'th root of a number x
+     */
+	@SuppressWarnings("unused")
 	private static double computeRoot(long x, long i) { //only for small numbers
 		double tmp = x;
 		double high = x;
@@ -135,12 +149,15 @@ public class MyPaillier {
 		return tmp;
 	}
 
-	/**
-	 * GCD for BigInteger
-	 * @param n1 a bigNubmer
-	 * @param n2 a bigNubmer
-	 * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
-	 */
+
+    /**
+     * GCD for BigInteger<br>
+     * @param n1 a bigNubmer
+     * @param n2 a bigNubmer
+     * @return if n1>=0&& n2>=0 the return will be the g.c.d of n1,n2
+	 * 
+	 * <b>complexity :</b> O((NUM_OF_BITS)^3)
+     */
 	public static BigInteger gcd(BigInteger n1, BigInteger n2){
 		if(n2.equals(BigInteger.ZERO)) return n1;
 		else{
@@ -151,31 +168,16 @@ public class MyPaillier {
 		}
 	}//end of gcd
 
-	/**
-	 * Log for big Integer
-	 * @param a the BigInteger
-	 * @param base the base
-	 * @return Log[base,a], in a double type, which is sufficient to numbers with 1024 bits.
-	 */
-	public static double log(BigInteger a, double base) {
-		int b = a.bitLength() - 1;
-		double c = 0;
-		double d = 1;
-		for (int i = b; i >= 0; --i) {
-			if (a.testBit(i))
-				c += d;
-			d *= 0.5;
-		}
-		return (Math.log(c) + Math.log(2) * b) / Math.log(base);
-	}
 
-	/**
-	 * Using the extended Euclidean algorithm<br>
-	 * 
-	 * @param number , the number we want to calculate the inverse to
-	 * @param moduluN , is used to create a number from the Ring of g*_moduluN
-	 * @return answer , where answer*number == 0 mod g*_moduluN
-	 */
+    /**
+     * Using the extended Euclidean algorithm
+     * This Function Was Checked with Big Numbers
+     * @param number , the number we want to calculate the inverse to
+     * @param moduluN , is used to create a number from the Ring of g*_moduluN
+     * @return answer , where answer*n== 0 mod g*_n
+	 *
+	 * <b>Complexity:</b> O((NUM_OF_BITS)^3).
+     */
 	public static BigInteger calculateInverse(BigInteger number,BigInteger moduluN){
 		BigInteger ans=moduluN;
 		BigInteger x=BigInteger.ZERO;
@@ -224,9 +226,10 @@ public class MyPaillier {
 		lambda=lambda.divide(gcd(p.subtract(BigInteger.ONE),q.subtract(BigInteger.ONE)));
 
 		//generate g, where g is a random number from Z*_n^2
-		BigInteger g=randomZStar(n.pow(2));
+		BigInteger nSquare = n.pow(2);
+		BigInteger g=randomZStar(nSquare);
 		//calculate mu
-		BigInteger lInput=powerMod(g, lambda, n.pow(2));
+		BigInteger lInput=powerMod(g, lambda, nSquare);
 		
 		BigInteger mu=calculateInverse(lFucntion(lInput,n), n);
 		
